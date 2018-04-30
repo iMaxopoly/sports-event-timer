@@ -1,7 +1,7 @@
 
 [![GitHub license](https://img.shields.io/github/license/kryptodev/sports-event-timer.svg)](https://github.com/kryptodev/sports-event-timer/blob/master/LICENSE)
 [![Go Report Card](https://goreportcard.com/badge/github.com/kryptodev/sports-event-timer)](https://goreportcard.com/report/github.com/kryptodev/sports-event-timer)
-[![DeepScan grade](https://deepscan.io/api/projects/2317/branches/13576/badge/grade.svg)](https://deepscan.io/dashboard#view=project&pid=2317&bid=13576)
+[![DeepScan grade](https://deepscan.io/api/projects/2329/branches/13742/badge/grade.svg)](https://deepscan.io/dashboard#view=project&pid=2329&bid=13742)
 [![Build Status](https://travis-ci.org/kryptodev/sports-event-timer.svg?branch=master)](https://travis-ci.org/kryptodev/sports-event-timer)
 
 # Sports Event Timing
