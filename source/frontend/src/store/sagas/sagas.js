@@ -259,11 +259,7 @@ export function* fetchFeedSaga() {
         return newAthlete;
       });
 
-      if (
-        responseMessage ===
-          "race is currently not in process, showing last race data" ||
-        athletes.every(athlete => athlete.timeTakenToFinish !== -1)
-      ) {
+      if (athletes.every(athlete => athlete.timeTakenToFinish !== -1)) {
         yield put(actions.setRaceData(newAthletes));
         break;
       }
