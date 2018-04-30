@@ -1,0 +1,24 @@
+@import url(https://fonts.googleapis.com/css?family=PT+Sans:400,700);
+@import url(https://fonts.googleapis.com/css?family=Pacifico);
+@import "styles/shared/colors";
+@import "styles/shared/fonts";
+
+body {
+  font-size: 0.9rem;
+  font-family: $font_main, $font_main_fallback;
+  background-color: $color_baltic_sea;
+  color: $color_silver_chalice;
+}
+
+.cursive-text {
+  font-family: $font_cursive, $font_cursive_fallback;
+}
+
+@import "styles/Alert",
+  "styles/Athlete",
+  "styles/Header",
+  "styles/Logo",
+  "styles/RaceControl",
+  "styles/RaceEvent",
+  "styles/RaceTable",
+  "styles/SimulationTypeSelector";

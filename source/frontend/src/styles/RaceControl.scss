@@ -1,0 +1,114 @@
+@import "shared/colors";
+
+// Button Spinner
+@keyframes spin {
+  to {
+    transform: rotate(359deg);
+  }
+}
+
+.spin {
+  animation: spin 1000ms linear infinite;
+}
+
+.spin-margin-right {
+  margin-right: 10px;
+}
+
+%button_extension {
+  background: linear-gradient($color_bunker, $color_vulcan 40%, $color_mirage)
+    no-repeat;
+  filter: none;
+}
+
+// Bootstrap Button Override
+.btn {
+  padding: 0.75rem 1rem;
+  font-size: 0.9375rem;
+  border-color: $color_black_60;
+  text-shadow: 1px 1px 1px $color_black_30;
+
+  &:focus {
+    box-shadow: 0 0 0 0.2rem $color_cape_cod_25;
+    border-color: $color_black_60;
+  }
+
+  &.focus {
+    box-shadow: 0 0 0 0.2rem $color_cape_cod_25;
+  }
+
+  &.disabled {
+    border-color: $color_black_60;
+    box-shadow: none;
+  }
+
+  &:hover {
+    border-color: $color_black_60;
+  }
+
+  &:not([disabled]):not(.disabled) {
+    &.active {
+      border-color: $color_black_60;
+      box-shadow: none;
+      &:hover {
+        border-color: $color_black_60;
+      }
+    }
+
+    &:active {
+      border-color: $color_black_60;
+      &:hover {
+        border-color: $color_black_60;
+      }
+    }
+  }
+}
+
+.btn-primary {
+  border-color: $color_cape_cod;
+  background: $color_cape_cod
+    linear-gradient($color_abbey, $color_cape_cod 60%, $color_outer_space)
+    no-repeat;
+  filter: none;
+
+  &:hover {
+    background-color: $color_baltic_sea;
+    border-color: $color_shark;
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 0.2rem $color_cape_cod_50;
+  }
+
+  &.focus {
+    box-shadow: 0 0 0 0.2rem $color_cape_cod_50;
+  }
+
+  &.disabled {
+    background-color: $color_cape_cod;
+    border-color: $color_cape_cod;
+  }
+
+  &:disabled {
+    background-color: $color_cape_cod;
+    border-color: $color_cape_cod;
+  }
+
+  &:not([disabled]):not(.disabled) {
+    &:hover {
+      @extend %button_extension;
+    }
+
+    &:focus {
+      @extend %button_extension;
+    }
+
+    &:active:hover {
+      @extend %button_extension;
+    }
+
+    &.active:hover {
+      @extend %button_extension;
+    }
+  }
+}

@@ -1,0 +1,123 @@
+@import "shared/colors";
+
+.card {
+  background-color: $color_tuna;
+  border: 1px solid $color_black_60;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.table {
+  font-size: small;
+  background-color: $color_baltic_sea;
+  th {
+    border-top: 1px solid $color_black_60;
+    font-size: x-small;
+  }
+  td {
+    border-top: 1px solid $color_black_60;
+  }
+  thead th {
+    border-bottom: 2px solid $color_black_60;
+  }
+  tbody + tbody {
+    border-top: 2px solid $color_black_60;
+  }
+  .thead-dark th {
+    color: $white;
+  }
+}
+
+.table-active,
+.table-active > th,
+.table-active > td {
+  background-color: rgba(255, 255, 255, 0.075);
+}
+
+.table-primary {
+  background-color: $color_limed_spruce;
+  > th {
+    background-color: $color_limed_spruce;
+  }
+  > td {
+    background-color: $color_limed_spruce;
+  }
+}
+
+.table-secondary {
+  background-color: $color_east_bay;
+  > th {
+    background-color: $color_east_bay;
+  }
+  > td {
+    background-color: $color_east_bay;
+  }
+}
+
+.table-info {
+  background-color: $color_viking;
+  color: $white;
+  > th {
+    background-color: $color_viking;
+  }
+  > td {
+    background-color: $color_viking;
+  }
+}
+
+.table-dark {
+  background-color: $color_ship_cove;
+  > th {
+    background-color: $color_ship_cove;
+  }
+  > td {
+    background-color: $color_ship_cove;
+  }
+}
+
+.table-light {
+  background-color: $color_william;
+  > th {
+    background-color: $color_william;
+  }
+  > td {
+    background-color: $color_william;
+  }
+}
+
+// Table animations for moving up and down using React Transition Group
+@keyframes slide-in {
+  from {
+    transform: translateY(20px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-out {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(20px);
+  }
+}
+
+.slide-enter {
+}
+
+.slide-enter-active {
+  animation: slide-in 0.5s ease-out forwards;
+  transition: opacity 0.5s;
+}
+
+.slide-exit {
+}
+
+.slide-exit-active {
+  animation: slide-out 0.5s ease-out forwards;
+  transition: opacity 0.5s;
+  opacity: 0;
+  position: absolute;
+}

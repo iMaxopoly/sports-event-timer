@@ -1,0 +1,11 @@
+@import "shared/colors";
+
+.alert {
+  border: none;
+}
+
+.alert-light {
+  color: $color_boulder;
+  border-color: $color_alabaster;
+  background-color: $color_gallery;
+}
