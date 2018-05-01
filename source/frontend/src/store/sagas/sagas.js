@@ -30,7 +30,7 @@ function* runningAthleteSaga(athleteIdentifier, timePoints, stopwatchStart) {
       return;
     }
 
-    runningAthlete.location += Math.floor(Math.random() * 10) + 20;
+    runningAthlete.location += Math.floor(Math.random() * 10) + 15;
 
     if (
       runningAthlete.location > timePoints[0].location &&
@@ -66,7 +66,7 @@ function* runningAthleteSaga(athleteIdentifier, timePoints, stopwatchStart) {
       break;
     } else {
       yield put(actions.updateRaceData([runningAthlete]));
-      yield delay(Math.floor(Math.random() * 300) + 900);
+      yield delay(Math.floor(Math.random() * 700) + 900);
     }
   }
 }
@@ -238,13 +238,13 @@ export function* fetchFeedSaga() {
       const response = yield axios.get(url);
 
       const responseMessage = response.data.responseMessage;
+      const athletes = response.data.athletes;
 
-      if (responseMessage !== "race is in process, showing live data") {
-        throwError("Server responded with '" + responseMessage + "'");
+      if (!responseMessage || !athletes) {
+        console.log(response);
+        throwError("Server encountered and error, please check console log.");
         break;
       }
-
-      const athletes = response.data.athletes;
 
       if (!athletes || athletes.length <= 0) {
         console.log(athletes);
@@ -265,6 +265,19 @@ export function* fetchFeedSaga() {
       }
 
       yield put(actions.setRaceData(newAthletes));
+
+      if (responseMessage !== "race is in process, showing live data") {
+        if (
+          responseMessage ===
+          "race is currently not in process, showing last race data"
+        ) {
+          break;
+        }
+
+        throwError("Server responded with '" + responseMessage + "'");
+        break;
+      }
+
       // Fetching race updates from the server every second
       yield delay(1000);
     }
@@ -306,7 +319,10 @@ export function* stopRaceSaga(action) {
     const response = yield axios.get(url);
 
     const responseMessage = response.data.responseMessage;
-    if (responseMessage !== "stopping race") {
+    if (
+      responseMessage !== "stopping race" &&
+      responseMessage !== "race is currently not in process"
+    ) {
       throwError("Server responded with '" + responseMessage + "'");
     }
 
