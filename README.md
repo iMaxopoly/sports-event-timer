@@ -223,6 +223,56 @@ _1, May, 2018_
 
 ___
 
+**FrontEnd Overview**
+----
+_The frontend is based on ReactJS, using Redux for state-management
+and Redux Saga as a side-effects middleware._
+
+Bootstrap is used as the CSS framework of choice and SCSS is used to
+modify the theme.
+
+[Click here](https://github.com/kryptodev/sports-event-timer/blob/master/source/frontend/src/assets/images/componentDiagram.png?raw=true) to see the component diagram of the application structure. 
+
+* **Notes:**
+
+_CSS modules in combination with SCSS files that allow for global CSS/SCSS
+dependencies(or from node_modules) to stay intact would have been a much proficient set up, not found in this project._
+Usage of FlipMove external dependency seems to be bad with performance, however, ideal for this project,
+compared to my slide animation attempt using react-transition-group, but definitely something to retry.
+
+_1, May, 2018_
+
+
+**Database Overview**
+----
+_The current database used is sqlite 3. For the database, 
+GORM is used as an ORM to allow quick replacement of database software without requiring to re-write code._
+
+These are the following tables created:
+> athlete_db_models
+
+```
+contains columns: 
+full_name                               string
+start_number                            int
+chip_identifier                         string
+in_finish_corridor                      boolean
+has_finished                            boolean
+location                                int
+time_taken_to_reach_finish_corridor     int
+time_taken_to_finish                    int
+```
+> timepoint_db_models
+
+```
+contains columns: 
+name                                    string
+location                                int
+chip_identifier                         string
+```
+
+_The database file itself(called 'RaceEventDB.db') is located in the 'dist' folder if using production build._
+
 ## To-do
 * Thorough Unit-Testing.
 * Replace mutexes in backend with pure channel-based solution.
