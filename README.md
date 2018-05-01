@@ -52,31 +52,38 @@ and time point chip identifiers.
 
 ```
 1. Go development environment and;
-2. NPM/Yarn.
+2. NPM/Yarn;
+3. GCC 64 bit for inbuilt sqlite3 database support; 
+   preferrably: https://sourceforge.net/projects/mingw-w64/
 ```
 
 ### Installing
 
 On a Windows machine, project can be built using the build.bat file.
 Subsequently, it will create a dist folder that will contain the production ReactJS files
-as well as the backend binary. 
+as well as the backend binary. Please ensure 64 bit `gcc`(required for sqlite3) is available at command prompt. 
 
 ```
-1. Clone the project in your GOPATH or download the repository as zip and extract it in your GOPATH.
-2. Change directory into the project root.
-3. Run ./build.bat.
+1. Clone the project in the src folder of your GOPATH
+2. Change directory into the project root
+3. Ensure that the project directory is called 'sports-event-timing' 
+   and follows the following folder structure: 'GOPATH/src/sports-event-timing/source/backend'
+3. Run ./build.bat
 ```  
 
-Alternatively, production files can also be generated separately(backend and frontend) as follows:
+Alternatively, production files can also be generated separately(backend and frontend).
+Again, please ensure 64 bit `gcc`(required for sqlite3) is available at command prompt. Steps as follows:
 
 ```
 1. Clone the project in your GOPATH or download the repository as zip and extract it in your GOPATH.
-2. Change directory into the %project root%/source/backend folder.
-3. Run go build to get the built executable.
-4. Change directory into the %project root%/source/frontend folder.
-5. Run 'npm install' or just 'yarn'(project uses yarn) to install dependencies.
-6. Run 'npm run build' or 'yarn build' to generate production files that will be placed inside %project root%/dist/ folder.
-7. Make sure the server executable is in the same folder as all other distribution files i. e. same folder as index.html
+2. Ensure that the project directory is called 'sports-event-timing' 
+   and follows the following folder structure: 'GOPATH/src/sports-event-timing/source/backend'
+3. Change directory into the %project root%/source/backend folder.
+4. Run go build to get the built executable.
+5. Change directory into the %project root%/source/frontend folder.
+6. Run 'npm install' or just 'yarn'(project uses yarn) to install dependencies.
+7. Run 'npm run build' or 'yarn build' to generate production files that will be placed inside %project root%/dist/ folder.
+8. Make sure the server executable is in the same folder as all other distribution files i. e. same folder as index.html
 ```
 
 **Backend REST API Overview**
