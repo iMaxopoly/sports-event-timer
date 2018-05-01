@@ -206,6 +206,10 @@ export function* commitFeedSaga(action) {
       responseMessage !==
       "race is in process, data was committed, showing committed data"
     ) {
+      if(responseMessage === "race is currently not in process"){
+        yield put(actions.commitFeedSuccess());
+        return;
+      }
       throwError("Server responded with '" + responseMessage + "'");
     }
     yield put(actions.commitFeedSuccess());
