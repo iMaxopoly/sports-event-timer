@@ -62,7 +62,7 @@ Subsequently, it will create a dist folder that will contain the production Reac
 as well as the backend binary. 
 
 ```
-1. Clone or download the repository as zip.
+1. Clone the project in your GOPATH or download the repository as zip and extract it in your GOPATH.
 2. Change directory into the project root.
 3. Run ./build.bat.
 ```  
@@ -70,14 +70,13 @@ as well as the backend binary.
 Alternatively, production files can also be generated separately(backend and frontend) as follows:
 
 ```
-1. Clone or download the repository as zip.
-2. Place the folder inside your GOPATH(if necessary, not required because vendored).
-3. Change directory into the %project root%/source/backend folder.
-4. Run go build to get the built executable.
-5. Change directory into the %project root%/source/frontend folder.
-6. Run 'npm install' or just 'yarn'(project uses yarn) to install dependencies.
-7. Run 'npm run build' or 'yarn build' to generate production files that will be placed inside %project root%/dist/ folder.
-8. Make sure the server executable is in the same folder as all other distribution files i. e. same folder as index.html
+1. Clone the project in your GOPATH or download the repository as zip and extract it in your GOPATH.
+2. Change directory into the %project root%/source/backend folder.
+3. Run go build to get the built executable.
+4. Change directory into the %project root%/source/frontend folder.
+5. Run 'npm install' or just 'yarn'(project uses yarn) to install dependencies.
+6. Run 'npm run build' or 'yarn build' to generate production files that will be placed inside %project root%/dist/ folder.
+7. Make sure the server executable is in the same folder as all other distribution files i. e. same folder as index.html
 ```
 
 **Backend REST API Overview**
