@@ -247,7 +247,6 @@ export function* fetchFeedSaga() {
       }
 
       if (athletes.length <= 0) {
-        console.log(athletes);
         throwError("Invalid data acquired from the server");
         break;
       }
