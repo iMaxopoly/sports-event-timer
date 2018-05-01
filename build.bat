@@ -1,1 +1,9 @@
-npm --prefix source/frontend install source/frontend && npm run build --prefix source/frontend && go build -x ./source/backend && move backend.exe dist/server.exe
+call cd "source\frontend"
+call npm install 
+call npm run build 
+call cd "..\backend"
+call go build -x 
+call cd "..\..\"
+call move "source\backend\backend.exe" "dist\server.exe"
+call cd "dist"
+call server.exe
