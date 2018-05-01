@@ -4,9 +4,17 @@
 [![DeepScan grade](https://deepscan.io/api/projects/2329/branches/13742/badge/grade.svg)](https://deepscan.io/dashboard#view=project&pid=2329&bid=13742)
 [![Build Status](https://travis-ci.org/kryptodev/sports-event-timer.svg?branch=master)](https://travis-ci.org/kryptodev/sports-event-timer)
 
+<p align="center">
+  <img src="https://github.com/kryptodev/sports-event-timer/blob/master/source/frontend/src/assets/images/logo-alt.png?raw=true" alt="Sports Event Timing"/>
+</p>
+
 # Sports Event Timing
 
 'Sports Event Timing' demonstrates the simulation of a race among dummy participants, both server-sided and client-sided.
+
+<p align="center">
+  <img src="https://github.com/kryptodev/sports-event-timer/blob/master/source/frontend/src/assets/images/demo.gif?raw=true" alt="App Demo"/>
+</p>
 
 ### Prerequisites
 
