@@ -5,7 +5,7 @@ import (
 	"sync"
 	"time"
 
-	"sports-event-timing/source/backend/database"
+	"sports-event-timer/source/backend/database"
 )
 
 // EventState is a helper type that masks an int type to help with better segregation of constant variables

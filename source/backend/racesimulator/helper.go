@@ -1,7 +1,7 @@
 package racesimulator
 
 import (
-	"sports-event-timing/source/backend/database"
+	"sports-event-timer/source/backend/database"
 )
 
 // helperFuncAthleteDBSliceToIEntitySlice helps in converting from:

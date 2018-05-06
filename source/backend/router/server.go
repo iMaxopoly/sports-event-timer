@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 
-	"sports-event-timing/source/backend/racesimulator"
+	"sports-event-timer/source/backend/racesimulator"
 
 	"github.com/julienschmidt/httprouter"
 	"github.com/rs/cors"

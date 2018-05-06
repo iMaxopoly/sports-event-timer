@@ -1,7 +1,7 @@
 package main
 
 import (
-	"sports-event-timing/source/backend/router"
+	"sports-event-timer/source/backend/router"
 )
 
 // The entry point of the project, where router.Server loads

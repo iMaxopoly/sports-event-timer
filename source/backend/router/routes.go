@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"time"
 
-	"sports-event-timing/source/backend/racesimulator"
+	"sports-event-timer/source/backend/racesimulator"
 
 	"github.com/julienschmidt/httprouter"
 )

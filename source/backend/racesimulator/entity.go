@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	"sports-event-timing/source/backend/database"
+	"sports-event-timer/source/backend/database"
 )
 
 var (
