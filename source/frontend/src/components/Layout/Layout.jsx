@@ -11,11 +11,13 @@ const layout = props => (
     <div className="row">
       <div className="col-lg-10 mx-auto">
         <Header />
+
         <SimulationTypeSelector
           callback={props.callback}
           simulationType={props.simulationType}
           raceInProgress={props.raceInProgress}
         />
+
         <div className="text-center">
           <span className="badge badge-pill badge-primary text-center">
             800m = Inside Finish Corridor
@@ -24,12 +26,14 @@ const layout = props => (
             1000m = Finish Line
           </span>
         </div>
+
         <RaceTable
           athletes={props.athletes}
           raceInProgress={props.raceInProgress}
           lastKnownError={props.lastKnownError}
           manualStop={props.manualStop}
         />
+
         {props.children}
       </div>
     </div>
@@ -38,7 +42,7 @@ const layout = props => (
 
 layout.propTypes = {
   athletes: PropTypes.array,
-  callback: PropTypes.any,
+  callback: PropTypes.func,
   children: PropTypes.any,
   lastKnownError: PropTypes.string,
   raceInProgress: PropTypes.bool,
