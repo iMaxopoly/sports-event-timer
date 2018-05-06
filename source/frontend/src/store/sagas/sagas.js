@@ -39,7 +39,7 @@ function* runningAthleteSaga(athleteIdentifier, timePoints, stopwatchStart) {
       // Athlete is in the finish corridor
       runningAthlete.timeTakenToReachFinishCorridor =
         new Date() - stopwatchStart;
-      yield put(
+      yield put.resolve(
         actions.commitFeed(
           runningAthlete.timeTakenToReachFinishCorridor,
           runningAthlete.identifier,
@@ -47,6 +47,7 @@ function* runningAthleteSaga(athleteIdentifier, timePoints, stopwatchStart) {
           simulationType.CLIENT
         )
       );
+
       yield put(actions.updateRaceData([runningAthlete]));
     } else if (
       runningAthlete.location > timePoints[1].location &&
@@ -54,7 +55,7 @@ function* runningAthleteSaga(athleteIdentifier, timePoints, stopwatchStart) {
     ) {
       // Athlete reached finish line
       runningAthlete.timeTakenToFinish = new Date() - stopwatchStart;
-      yield put(
+      yield put.resolve(
         actions.commitFeed(
           runningAthlete.timeTakenToFinish,
           runningAthlete.identifier,
@@ -62,6 +63,7 @@ function* runningAthleteSaga(athleteIdentifier, timePoints, stopwatchStart) {
           simulationType.CLIENT
         )
       );
+
       yield put(actions.updateRaceData([runningAthlete]));
       break;
     } else {
@@ -78,87 +80,84 @@ function* runningAthleteSaga(athleteIdentifier, timePoints, stopwatchStart) {
 export function* startRaceSaga(action) {
   yield put(actions.startRaceStart());
 
-  let url;
-  switch (action.simulationType) {
-    case simulationType.CLIENT:
-      url = "client/race-simulation/start";
-      break;
-    case simulationType.SERVER:
-      url = "server/race-simulation/start";
-      break;
-    default:
-      break;
-  }
-
   try {
+    let url, response, responseMessage, athletes, newAthletes;
+
     // Checking if simulation type requested is of type client or server.
-    if (action.simulationType === simulationType.CLIENT) {
-      const response = yield axios.get(url);
+    switch (action.simulationType) {
+      case simulationType.CLIENT:
+        url = "client/race-simulation/start";
+        response = yield axios.get(url);
 
-      const responseMessage = response.data.responseMessage;
-      if (responseMessage !== "starting race") {
-        throwError("Server responded with '" + responseMessage + "'");
-      }
+        responseMessage = response.data.responseMessage;
+        if (responseMessage !== "starting race") {
+          throwError("Server responded with '" + responseMessage + "'");
+        }
 
-      const athletes = response.data.athletes;
-      const timePoints = response.data.timePoints;
+        athletes = response.data.athletes;
+        const timePoints = response.data.timePoints;
 
-      let newAthletes = athletes.map(athlete => {
-        const newAthlete = athlete;
-        newAthlete.location = 0;
-        return newAthlete;
-      });
+        newAthletes = athletes.map(athlete => {
+          const newAthlete = athlete;
+          newAthlete.location = 0;
+          return newAthlete;
+        });
 
-      yield put(actions.startRaceSuccess(newAthletes, timePoints));
+        yield put(actions.startRaceSuccess(newAthletes, timePoints));
 
-      // Note the time
-      const stopwatchStart = new Date();
+        // Note the time
+        const stopwatchStart = new Date();
 
-      // Concurrently let each athlete run
-      yield all(
-        newAthletes.map(athlete =>
-          call(
-            runningAthleteSaga,
-            athlete.identifier,
-            timePoints,
-            stopwatchStart
+        // Concurrently let each athlete run
+        yield all(
+          newAthletes.map(athlete =>
+            call(
+              runningAthleteSaga,
+              athlete.identifier,
+              timePoints,
+              stopwatchStart
+            )
           )
-        )
-      );
+        );
 
-      // Making sure not to send the stop request twice if the user has pushed
-      // the stop button already.
-      const raceStatus = yield select(getRaceStatus);
-      if (!raceStatus) {
-        return;
-      }
+        // Making sure not to send the stop request twice if the user has pushed
+        // the stop button already.
+        const raceStatus = yield select(getRaceStatus);
+        if (!raceStatus) {
+          return;
+        }
 
-      // Race finished normally without user interruption so we stop the race.
-      yield put(actions.stopRace(simulationType.CLIENT));
-    } else if (action.simulationType === simulationType.SERVER) {
-      const response = yield axios.get(url);
+        // Race finished normally without user interruption so we stop the race.
+        yield put(actions.stopRace(simulationType.CLIENT));
+        break;
+      case simulationType.SERVER:
+        url = "server/race-simulation/start";
+        response = yield axios.get(url);
 
-      const responseMessage = response.data.responseMessage;
-      if (responseMessage !== "starting race") {
-        throwError("Server responded with '" + responseMessage + "'");
-      }
+        responseMessage = response.data.responseMessage;
+        if (responseMessage !== "starting race") {
+          throwError("Server responded with '" + responseMessage + "'");
+        }
 
-      const athletes = response.data.athletes;
+        athletes = response.data.athletes;
 
-      // Instantiate each athlete received from the server with a location of 0
-      // to be on the safe side. This may require optimization in the future.
-      let newAthletes = athletes.map(athlete => {
-        const newAthlete = athlete;
-        newAthlete.location = 0;
-        return newAthlete;
-      });
+        // Instantiate each athlete received from the server with a location of 0
+        // to be on the safe side. This may require optimization in the future.
+        newAthletes = athletes.map(athlete => {
+          const newAthlete = athlete;
+          newAthlete.location = 0;
+          return newAthlete;
+        });
 
-      // Race is ready to begin, athletes get populated. We don't need timepoints for
-      // server emulation.
-      yield put(actions.startRaceSuccess(newAthletes, []));
+        // Race is ready to begin, athletes get populated. We don't need timepoints for
+        // server emulation.
+        yield put(actions.startRaceSuccess(newAthletes, []));
 
-      // We start the generator up to fetch live data from the server every second.
-      yield put(actions.fetchFeed());
+        // We start the generator up to fetch live data from the server every second.
+        yield put(actions.fetchFeed());
+        break;
+      default:
+        break;
     }
   } catch (error) {
     console.log(error);
@@ -176,6 +175,9 @@ export function* startRaceSaga(action) {
   }
 }
 
+// Pushes current athlete standings to the server which stores the data into the database.
+// The saga is strictly for client-based simulation and pushes data onto the server whenever
+// an athlete trips a timepoint.
 export function* commitFeedSaga(action) {
   yield put(actions.commitFeedStart());
 
@@ -206,7 +208,7 @@ export function* commitFeedSaga(action) {
       responseMessage !==
       "race is in process, data was committed, showing committed data"
     ) {
-      if(responseMessage === "race is currently not in process"){
+      if (responseMessage === "race is currently not in process") {
         yield put(actions.commitFeedSuccess());
         return;
       }
@@ -229,6 +231,8 @@ export function* commitFeedSaga(action) {
   }
 }
 
+// fetchFeedSaga fetches live race data from the server periodically.
+// This is essentially only for server simulated race.
 export function* fetchFeedSaga() {
   let url = "server/race-simulation/fetch/live-standings";
 
@@ -303,6 +307,7 @@ export function* fetchFeedSaga() {
   }
 }
 
+// stopRaceSaga stops the race and flags all underlying concurrent activites to stop.
 export function* stopRaceSaga(action) {
   yield put(actions.stopRaceStart());
 
