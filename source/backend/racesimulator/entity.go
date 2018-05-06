@@ -93,22 +93,27 @@ type athlete struct {
 	timeTakenToFinish              time.Duration
 }
 
+// EntityName returns the full name of the participating athlete
 func (ath *athlete) EntityName() string { return ath.fullName }
 
 func (ath *athlete) setEntityName(name string) { ath.fullName = name }
 
+// StartNumber returns the prefixed starting number of the participating athlete
 func (ath *athlete) StartNumber() int { return ath.startNumber }
 
 func (ath *athlete) setStartNumber(number int) { ath.startNumber = number }
 
+// Chip returns the chip embedded on the participating athlete
 func (ath *athlete) Chip() IChip { return ath.chip }
 
 func (ath *athlete) setChip(chip IChip) { ath.chip = chip }
 
+// Speed returns the speed of the participating athlete
 func (ath *athlete) Speed() int { return ath.speed }
 
 func (ath *athlete) setSpeed(speed int) { ath.speed = speed }
 
+// Location returns the
 func (ath *athlete) Location() int { return ath.location }
 
 func (ath *athlete) setLocation(location int) { ath.location = location }
@@ -172,7 +177,7 @@ func (ath *athlete) Run(state *EventState, timePoints ...ITimePoint) {
 				if int(ath.location) >= int(t.Location()) && !ath.inFinishCorridor {
 					ath.inFinishCorridor = true
 					ath.timeTakenToReachFinishCorridor = time.Since(ath.timeStart) / time.Millisecond
-					database.Operator.Update(ath.Chip().Identifier(), database.AthleteDBModel{
+					database.Operator.Update(ath.Chip().Identifier(), &database.AthleteDBModel{
 						InFinishCorridor:               ath.inFinishCorridor,
 						TimeTakenToReachFinishCorridor: ath.timeTakenToReachFinishCorridor,
 						Location:                       ath.location,
@@ -180,7 +185,7 @@ func (ath *athlete) Run(state *EventState, timePoints ...ITimePoint) {
 					fmt.Println(fmt.Sprintf("%v with ID: %v in finish corridor - took %v ms",
 						ath.fullName, ath.chip.Identifier(), float64(ath.timeTakenToReachFinishCorridor)))
 				} else {
-					database.Operator.Update(ath.Chip().Identifier(), database.AthleteDBModel{
+					database.Operator.Update(ath.Chip().Identifier(), &database.AthleteDBModel{
 						Location: ath.location,
 					})
 				}
@@ -189,7 +194,7 @@ func (ath *athlete) Run(state *EventState, timePoints ...ITimePoint) {
 				if int(ath.location) >= int(t.Location()) && !ath.hasFinished {
 					ath.hasFinished = true
 					ath.timeTakenToFinish = time.Since(ath.timeStart) / time.Millisecond
-					database.Operator.Update(ath.Chip().Identifier(), database.AthleteDBModel{
+					database.Operator.Update(ath.Chip().Identifier(), &database.AthleteDBModel{
 						HasFinished:       ath.hasFinished,
 						TimeTakenToFinish: ath.timeTakenToFinish,
 						Location:          ath.location,
@@ -197,7 +202,7 @@ func (ath *athlete) Run(state *EventState, timePoints ...ITimePoint) {
 					fmt.Println(fmt.Sprintf("%v with ID: %v in finish line - took %v ms",
 						ath.fullName, ath.chip.Identifier(), float64(ath.timeTakenToFinish)))
 				} else {
-					database.Operator.Update(ath.Chip().Identifier(), database.AthleteDBModel{
+					database.Operator.Update(ath.Chip().Identifier(), &database.AthleteDBModel{
 						Location: ath.location,
 					})
 				}

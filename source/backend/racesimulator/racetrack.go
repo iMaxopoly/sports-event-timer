@@ -75,6 +75,6 @@ func (rt *raceTrack) Race(state *EventState) {
 
 // NewRaceTrack returns a new interface of IRaceTrack.
 // It takes the distance, slice of IEntity, and a variadic input of ITimePoint.
-func NewRaceTrack(distance PointAtDistance, athletes []IEntity, timepoints ...ITimePoint) IRaceTrack {
-	return &raceTrack{distance: distance, athletes: athletes, timePoints: timepoints}
+func NewRaceTrack(distance PointAtDistance, athletes *[]IEntity, timepoints *[]ITimePoint) IRaceTrack {
+	return &raceTrack{distance: distance, athletes: *athletes, timePoints: *timepoints}
 }

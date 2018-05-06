@@ -19,6 +19,7 @@ func init() {
 	event.SetEventState(racesimulator.RaceNotRunning)
 }
 
+// Serve loads up the routes and serves at given point.
 func Serve() {
 	mux := httprouter.New()
 

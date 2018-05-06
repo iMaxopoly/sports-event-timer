@@ -20,13 +20,15 @@ type IChip interface {
 	SetIdentifier(string) error
 }
 
-// chip is an implementation struct of IChip interface and serves as
+// Chip is an implementation struct of IChip interface and serves as
 // the chip to be used in both cases; the athlete as well as the timepoint marks
 // on the racetrack.
 type Chip struct{ identifier string }
 
+// Identifier returns the identifier of the chip in string format.
 func (c *Chip) Identifier() string { return c.identifier }
 
+// SetIdentifier sets the indentifier string on a chip, making sure that is isn't empty.
 func (c *Chip) SetIdentifier(id string) error {
 	if strings.TrimSpace(id) == "" {
 		return errChipSetIdentifierInvalid

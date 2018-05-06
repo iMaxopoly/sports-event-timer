@@ -25,12 +25,12 @@ type IEvent interface {
 	StartServerSimulatedRace()
 	StartClientSimulatedRace()
 	StopSimulatedRace()
-	Entities() []IEntity
-	SetEntities([]IEntity)
+	Entities() *[]IEntity
+	SetEntities(*[]IEntity)
 	UpdateEntitiesFromTimePoint(IChip, IChip, time.Duration)
 	EntityLocation(IChip) int
 	EntityPosition(IChip) int
-	TimePoints() []ITimePoint
+	TimePoints() *[]ITimePoint
 	TimeTaken() time.Duration
 	EventState() EventState
 	SetEventState(EventState)
@@ -47,6 +47,9 @@ type RaceEvent struct {
 	entitiesSetMutex    sync.Mutex
 }
 
+// StartServerSimulatedRace starts a server simulated race using goroutines allowing
+// the client to periodically fetch live data which gets stored into the database
+// by the server.
 func (re *RaceEvent) StartServerSimulatedRace() {
 	// Ensuring singular instance
 	if re.EventState() == RaceRunning {
@@ -63,7 +66,7 @@ func (re *RaceEvent) StartServerSimulatedRace() {
 	dummyAthletes := helperFuncAthleteDBSliceToIEntitySlice(database.Operator.GetDummies())
 
 	// Read the racetrack
-	re.raceTrack = NewRaceTrack(FinishPoint, dummyAthletes, dummyTimePoints...)
+	re.raceTrack = NewRaceTrack(FinishPoint, dummyAthletes, dummyTimePoints)
 
 	re.timeStarted = time.Now()
 	re.raceTrack.Race(&re.eventState)
@@ -80,11 +83,11 @@ func (re *RaceEvent) StartClientSimulatedRace() {
 
 func (re *RaceEvent) StopSimulatedRace() { re.SetEventState(RaceNotRunning) }
 
-func (re *RaceEvent) Entities() []IEntity {
+func (re *RaceEvent) Entities() *[]IEntity {
 	return helperFuncAthleteDBSliceToIEntitySlice(database.Operator.Entities())
 }
 
-func (re *RaceEvent) SetEntities(entities []IEntity) {
+func (re *RaceEvent) SetEntities(entities *[]IEntity) {
 	defer re.entitiesSetMutex.Unlock()
 	re.entitiesSetMutex.Lock()
 
@@ -99,13 +102,13 @@ func (re *RaceEvent) UpdateEntitiesFromTimePoint(entityIdentifier IChip, timePoi
 		if timePoint.Chip().Identifier() == timePointIdentifier.Identifier() {
 			switch timePoint.Name() {
 			case CorridorTimePoint:
-				database.Operator.Update(entityIdentifier.Identifier(), database.AthleteDBModel{
+				database.Operator.Update(entityIdentifier.Identifier(), &database.AthleteDBModel{
 					InFinishCorridor:               true,
 					TimeTakenToReachFinishCorridor: timeElapsed,
 				})
 				break
 			case FinishLineTimePoint:
-				database.Operator.Update(entityIdentifier.Identifier(), database.AthleteDBModel{
+				database.Operator.Update(entityIdentifier.Identifier(), &database.AthleteDBModel{
 					HasFinished:       true,
 					TimeTakenToFinish: timeElapsed,
 				})
@@ -117,7 +120,7 @@ func (re *RaceEvent) UpdateEntitiesFromTimePoint(entityIdentifier IChip, timePoi
 }
 
 func (re *RaceEvent) EntityLocation(chip IChip) int {
-	for _, athlete := range re.Entities() {
+	for _, athlete := range *re.Entities() {
 		if athlete.Chip().Identifier() == chip.Identifier() {
 			return athlete.Location()
 		}
@@ -127,7 +130,7 @@ func (re *RaceEvent) EntityLocation(chip IChip) int {
 }
 
 func (re *RaceEvent) EntityPosition(chip IChip) int {
-	entities := re.Entities()
+	entities := *re.Entities()
 
 	sort.Slice(entities, func(i, j int) bool {
 		return entities[i].Location() > entities[i].Location()
@@ -142,7 +145,7 @@ func (re *RaceEvent) EntityPosition(chip IChip) int {
 	return -1
 }
 
-func (re *RaceEvent) TimePoints() []ITimePoint {
+func (re *RaceEvent) TimePoints() *[]ITimePoint {
 	return helperFuncTimePointDBSliceToITimePointSlice(database.Operator.TimePoints())
 }
 
@@ -173,5 +176,5 @@ func (re *RaceEvent) ResetPlatform() {
 	dummyAthletes := helperFuncAthleteDBSliceToIEntitySlice(database.Operator.GetDummies())
 
 	// Read the racetrack
-	re.raceTrack = NewRaceTrack(FinishPoint, dummyAthletes, dummyTimePoints...)
+	re.raceTrack = NewRaceTrack(FinishPoint, dummyAthletes, dummyTimePoints)
 }
