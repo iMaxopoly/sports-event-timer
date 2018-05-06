@@ -93,41 +93,49 @@ type athlete struct {
 	timeTakenToFinish              time.Duration
 }
 
-// EntityName returns the full name of the participating athlete
+// EntityName returns the full name of the participating athlete.
 func (ath *athlete) EntityName() string { return ath.fullName }
 
 func (ath *athlete) setEntityName(name string) { ath.fullName = name }
 
-// StartNumber returns the prefixed starting number of the participating athlete
+// StartNumber returns the prefixed starting number of the participating athlete.
 func (ath *athlete) StartNumber() int { return ath.startNumber }
 
 func (ath *athlete) setStartNumber(number int) { ath.startNumber = number }
 
-// Chip returns the chip embedded on the participating athlete
+// Chip returns the chip embedded on the participating athlete.
 func (ath *athlete) Chip() IChip { return ath.chip }
 
 func (ath *athlete) setChip(chip IChip) { ath.chip = chip }
 
-// Speed returns the speed of the participating athlete
+// Speed returns the speed of the participating athlete.
 func (ath *athlete) Speed() int { return ath.speed }
 
 func (ath *athlete) setSpeed(speed int) { ath.speed = speed }
 
-// Location returns the
+// Location returns the curent location of the athlete.
 func (ath *athlete) Location() int { return ath.location }
 
 func (ath *athlete) setLocation(location int) { ath.location = location }
 
+// SprintDistance returns the point in distance to which the athlete will run towards.
 func (ath *athlete) SprintDistance() PointAtDistance { return ath.sprintTo }
 
 func (ath *athlete) setSprintDistance(sprintTo PointAtDistance) { ath.sprintTo = sprintTo }
 
+// InFinishCorridor returns true or false as to whether the athlete is in the finish corridor,
+// or not.
 func (ath *athlete) InFinishCorridor() bool { return ath.inFinishCorridor }
 
+// HasFinished returns true or false as to whether the athlete has finished the race or not.
 func (ath *athlete) HasFinished() bool { return ath.hasFinished }
 
+// TimeTakenToFinish returns the duration in milliseconds for the athlete to have completed
+// the entire race.
 func (ath *athlete) TimeTakenToFinish() time.Duration { return ath.timeTakenToFinish }
 
+// TimeTakenToReachFinishCorridor returns the duration in milliseconds for the athlete to have reached
+// the finish corridor.
 func (ath *athlete) TimeTakenToReachFinishCorridor() time.Duration {
 	return ath.timeTakenToReachFinishCorridor
 }

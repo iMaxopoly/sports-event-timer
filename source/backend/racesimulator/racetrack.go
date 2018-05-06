@@ -45,7 +45,7 @@ func (rt *raceTrack) Distance() PointAtDistance { return rt.distance }
 
 func (rt *raceTrack) setDistance(distance PointAtDistance) { rt.distance = distance }
 
-// Atheletes returns a collection of IEntity that are expected to compete in the racetrack.
+// Athletes returns a collection of IEntity that are expected to compete in the racetrack.
 func (rt *raceTrack) Athletes() []IEntity { return rt.athletes }
 
 func (rt *raceTrack) setAthletes(athletes []IEntity) { rt.athletes = athletes }

@@ -1,5 +1,7 @@
 package racesimulator
 
+// ITimePoint is the interface that wraps the underlying TimePoint related methods.
+// This helps form consistency with derivative structures.
 type ITimePoint interface {
 	// Name is the name of the timepoint which denotes where the timepoint resides. TimePointName is a simple
 	// wrapper over string type.
@@ -20,7 +22,10 @@ type ITimePoint interface {
 type TimePointName string
 
 const (
-	CorridorTimePoint   TimePointName = "Corridor Timepoint"
+	// CorridorTimePoint is a convenience name tag holder for the finish corridor timepoint.
+	CorridorTimePoint TimePointName = "Corridor Timepoint"
+
+	// FinishLineTimePoint is a convenience name tag holder for the finish line timepoint.
 	FinishLineTimePoint TimePointName = "Finish Line Timepoint"
 )
 
