@@ -1,40 +1,32 @@
 matrix:
   include:
     - language: go
-
-    go:
-      - "1.10.1"
-      - master
-
-    install: true
-
-    matrix:
-      allow_failures:
-        - go: master
-
-      fast_finish: true
-
-    before_script:
-      - GO_FILES=$(find . -iname '*.go' -type f | grep -v /vendor/)
-
-    script:
-      - test -z $(gofmt -s -l $GO_FILES)
-
-  include:
+      go:
+        - "1.10.1"
+        - master
+      before_install:
+        - go get golang.org/x/tools/cmd/cover
+        - go get github.com/mattn/goveralls
+        - go get github.com/golang/lint/golint
+      install: true
+      matrix:
+        allow_failures:
+          - go: master
+        fast_finish: true
+      before_script:
+        - GO_FILES=$(find /source/backend -iname '*.go' -type f | grep -v /source/backend/vendor/)
+      script:
+        - test -z $(gofmt -s -l $GO_FILES)
+        - test -z $(golint ./... $GO_FILES)"
     - language: node_js
-
-    node_js:
-      - "10.0.0"
-      - master
-
-    matrix:
-      allow_failures:
-        - node_js: master
-
-      fast_finish: true
-
-    script:
-      - npm test
-
+      node_js:
+        - "10.0.0"
+        - master
+      matrix:
+        allow_failures:
+          - node_js: master
+        fast_finish: true
+      script:
+        - npm test
 notifications:
   email: false
