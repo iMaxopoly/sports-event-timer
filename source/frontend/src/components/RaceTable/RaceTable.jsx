@@ -37,7 +37,7 @@ class RaceTable extends Component {
   athletesSorter = athletes => {
     if (athletes.every(athlete => athlete.timeTakenToFinish !== -1)) {
       return athletes
-        .map(athlete => Object.assign({}, athlete))
+        .map(athlete => ({...athlete}))
         .sort((a, b) =>
           this.athleteSortComparison(a.timeTakenToFinish, b.timeTakenToFinish)
         );
@@ -48,7 +48,7 @@ class RaceTable extends Component {
       athletes.every(athlete => athlete.timeTakenToReachFinishCorridor !== -1)
     ) {
       return athletes
-        .map(athlete => Object.assign({}, athlete))
+        .map(athlete => ({...athlete}))
         .sort((a, b) =>
           this.athleteSortComparison(
             a.timeTakenToReachFinishCorridor,
@@ -59,7 +59,7 @@ class RaceTable extends Component {
 
     // Sorts the athletes based on their location during the race.
     return athletes
-      .map(athlete => Object.assign({}, athlete))
+      .map(athlete => ({...athlete}))
       .sort((a, b) => this.athleteSortComparison(a.location, b.location))
       .reverse();
   };

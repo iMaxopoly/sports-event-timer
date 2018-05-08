@@ -101,7 +101,7 @@ export function* startRaceSaga(action) {
         const timePoints = response.data.timePoints;
 
         newAthletes = athletes.map(athlete => {
-          const newAthlete = {...athlete};
+          const newAthlete = { ...athlete };
           newAthlete.location = 0;
           return newAthlete;
         });
