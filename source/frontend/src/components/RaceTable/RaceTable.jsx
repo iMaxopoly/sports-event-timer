@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 import FlipMove from "react-flip-move";
-import Alert from "../../components/Alert/Alert";
+import Alert from "../Alert/Alert";
 import Athlete from "../Athlete/Athlete";
 
 // RaceTable wraps the Athlete container in a table showing the entirety of the

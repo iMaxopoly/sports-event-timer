@@ -1,14 +1,14 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const alert = props => (
+const Alert = props => (
   <div className="alert alert-light fade show text-center">
     <strong>{props.message}</strong>
   </div>
 );
 
-alert.propTypes = {
+Alert.propTypes = {
   message: PropTypes.string.isRequired
 };
 
-export default alert;
+export default Alert;

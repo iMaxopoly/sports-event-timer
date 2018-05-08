@@ -2,11 +2,11 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import Header from "../Header/Header";
-import RaceTable from "../../containers/RaceTable/RaceTable";
+import RaceTable from "../RaceTable/RaceTable";
 import SimulationTypeSelector from "../SimulationTypeSelector/SimulationTypeSelector";
 
-// Layout component holds the entire layout of the application.
-const layout = props => (
+// Layout component holds the entire Layout of the application.
+const Layout = props => (
   <div className="container">
     <div className="row">
       <div className="col-lg-10 mx-auto">
@@ -40,7 +40,7 @@ const layout = props => (
   </div>
 );
 
-layout.propTypes = {
+Layout.propTypes = {
   athletes: PropTypes.array,
   callback: PropTypes.func,
   children: PropTypes.any,
@@ -49,4 +49,4 @@ layout.propTypes = {
   simulationType: PropTypes.symbol
 };
 
-export default layout;
+export default Layout;
