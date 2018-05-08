@@ -22,6 +22,9 @@ function* runningAthleteSaga(athleteIdentifier, timePoints, stopwatchStart) {
       break;
     }
 
+    // This is a copy of the athlete from the store considering it
+    // is returned by the filter function. Mutations on this array should not
+    // affect the store.
     const runningAthlete = yield select(
       getAthleteByIdentifier,
       athleteIdentifier
@@ -98,7 +101,7 @@ export function* startRaceSaga(action) {
         const timePoints = response.data.timePoints;
 
         newAthletes = athletes.map(athlete => {
-          const newAthlete = athlete;
+          const newAthlete = {...athlete};
           newAthlete.location = 0;
           return newAthlete;
         });
