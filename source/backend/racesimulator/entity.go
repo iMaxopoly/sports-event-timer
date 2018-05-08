@@ -177,43 +177,30 @@ func (ath *athlete) Run(state *EventState, timePoints ...ITimePoint) {
 		time.Sleep(500 * time.Millisecond)
 		ath.location += randInt(10, 16)
 
+		database.Operator.Update(ath.Chip().Identifier(), &database.AthleteDBModel{
+			Location: ath.location,
+		})
+
 		for _, t := range timePoints {
-			switch t.Name() {
-			default:
+			if t.Name() == CorridorTimePoint && !ath.inFinishCorridor && int(ath.location) > int(t.Location()) {
+				ath.inFinishCorridor = true
+				ath.timeTakenToReachFinishCorridor = time.Since(ath.timeStart) / time.Millisecond
+				database.Operator.Update(ath.Chip().Identifier(), &database.AthleteDBModel{
+					InFinishCorridor:               ath.inFinishCorridor,
+					TimeTakenToReachFinishCorridor: ath.timeTakenToReachFinishCorridor,
+				})
+				fmt.Println(fmt.Sprintf("%v with ID: %v in finish corridor - took %v ms",
+					ath.fullName, ath.chip.Identifier(), float64(ath.timeTakenToReachFinishCorridor)))
 				break
-			case CorridorTimePoint:
-				if int(ath.location) >= int(t.Location()) && !ath.inFinishCorridor {
-					ath.inFinishCorridor = true
-					ath.timeTakenToReachFinishCorridor = time.Since(ath.timeStart) / time.Millisecond
-					database.Operator.Update(ath.Chip().Identifier(), &database.AthleteDBModel{
-						InFinishCorridor:               ath.inFinishCorridor,
-						TimeTakenToReachFinishCorridor: ath.timeTakenToReachFinishCorridor,
-						Location:                       ath.location,
-					})
-					fmt.Println(fmt.Sprintf("%v with ID: %v in finish corridor - took %v ms",
-						ath.fullName, ath.chip.Identifier(), float64(ath.timeTakenToReachFinishCorridor)))
-				} else {
-					database.Operator.Update(ath.Chip().Identifier(), &database.AthleteDBModel{
-						Location: ath.location,
-					})
-				}
-				break
-			case FinishLineTimePoint:
-				if int(ath.location) >= int(t.Location()) && !ath.hasFinished {
-					ath.hasFinished = true
-					ath.timeTakenToFinish = time.Since(ath.timeStart) / time.Millisecond
-					database.Operator.Update(ath.Chip().Identifier(), &database.AthleteDBModel{
-						HasFinished:       ath.hasFinished,
-						TimeTakenToFinish: ath.timeTakenToFinish,
-						Location:          ath.location,
-					})
-					fmt.Println(fmt.Sprintf("%v with ID: %v in finish line - took %v ms",
-						ath.fullName, ath.chip.Identifier(), float64(ath.timeTakenToFinish)))
-				} else {
-					database.Operator.Update(ath.Chip().Identifier(), &database.AthleteDBModel{
-						Location: ath.location,
-					})
-				}
+			} else if t.Name() == FinishLineTimePoint && !ath.hasFinished && int(ath.location) > int(t.Location()) {
+				ath.hasFinished = true
+				ath.timeTakenToFinish = time.Since(ath.timeStart) / time.Millisecond
+				database.Operator.Update(ath.Chip().Identifier(), &database.AthleteDBModel{
+					HasFinished:       ath.hasFinished,
+					TimeTakenToFinish: ath.timeTakenToFinish,
+				})
+				fmt.Println(fmt.Sprintf("%v with ID: %v in finish line - took %v ms",
+					ath.fullName, ath.chip.Identifier(), float64(ath.timeTakenToFinish)))
 				break
 			}
 		}
