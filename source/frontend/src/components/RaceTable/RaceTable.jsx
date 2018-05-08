@@ -31,18 +31,15 @@ class RaceTable extends Component {
     <Alert message="Race is currently not underway." />
   );
 
+  athleteSortComparison = (a, b) => (b < a ? 1 : a < b ? -1 : 0);
+
   // Sorts the athletes based on time taken to finish the race.
   athletesSorter = athletes => {
     if (athletes.every(athlete => athlete.timeTakenToFinish !== -1)) {
       return athletes
         .map(athlete => Object.assign({}, athlete))
-        .sort(
-          (a, b) =>
-            b.timeTakenToFinish < a.timeTakenToFinish
-              ? 1
-              : a.timeTakenToFinish < b.timeTakenToFinish
-                ? -1
-                : 0
+        .sort((a, b) =>
+          this.athleteSortComparison(a.timeTakenToFinish, b.timeTakenToFinish)
         );
     }
 
@@ -52,24 +49,19 @@ class RaceTable extends Component {
     ) {
       return athletes
         .map(athlete => Object.assign({}, athlete))
-        .sort(
-          (a, b) =>
-            b.timeTakenToReachFinishCorridor < a.timeTakenToReachFinishCorridor
-              ? 1
-              : a.timeTakenToReachFinishCorridor <
-                b.timeTakenToReachFinishCorridor
-                ? -1
-                : 0
+        .sort((a, b) =>
+          this.athleteSortComparison(
+            a.timeTakenToReachFinishCorridor,
+            b.timeTakenToReachFinishCorridor
+          )
         );
     }
 
     // Sorts the athletes based on their location during the race.
     return athletes
       .map(athlete => Object.assign({}, athlete))
-      .sort(
-        (a, b) =>
-          b.location > a.location ? 1 : a.location > b.location ? -1 : 0
-      );
+      .sort((a, b) => this.athleteSortComparison(a.location, b.location))
+      .reverse();
   };
 
   // Populates the table with athlete attributes in an on-going race
