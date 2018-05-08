@@ -37,7 +37,7 @@ class RaceTable extends Component {
   athletesSorter = athletes => {
     if (athletes.every(athlete => athlete.timeTakenToFinish !== -1)) {
       return athletes
-        .map(athlete => ({...athlete}))
+        .map(athlete => ({ ...athlete }))
         .sort((a, b) =>
           this.athleteSortComparison(a.timeTakenToFinish, b.timeTakenToFinish)
         );
@@ -48,7 +48,7 @@ class RaceTable extends Component {
       athletes.every(athlete => athlete.timeTakenToReachFinishCorridor !== -1)
     ) {
       return athletes
-        .map(athlete => ({...athlete}))
+        .map(athlete => ({ ...athlete }))
         .sort((a, b) =>
           this.athleteSortComparison(
             a.timeTakenToReachFinishCorridor,
@@ -59,7 +59,7 @@ class RaceTable extends Component {
 
     // Sorts the athletes based on their location during the race.
     return athletes
-      .map(athlete => ({...athlete}))
+      .map(athlete => ({ ...athlete }))
       .sort((a, b) => this.athleteSortComparison(a.location, b.location))
       .reverse();
   };
@@ -109,25 +109,33 @@ class RaceTable extends Component {
     </div>
   );
 
+  isRaceInProgress = () =>
+    this.props.raceInProgress ||
+    this.props.athletes.length !== 0 ||
+    this.props.lastKnownError;
+
+  isTableReadyForDisplay = () =>
+    (this.props.athletes.length !== 0 && !this.props.lastKnownError) ||
+    (this.props.athletes.length !== 0 && this.props.manualStop);
+
+  isErrorPresent = () => this.props.lastKnownError && !this.props.manualStop;
+
   render() {
     return (
       <div className="card">
         <div className="card-body">
           <div className="card-text">
-            {!this.props.raceInProgress &&
-            this.props.athletes.length === 0 &&
-            !this.props.lastKnownError
+            {!this.isRaceInProgress()
               ? this.raceNotInProgressRenderer()
-              : null}
-            {(this.props.athletes.length !== 0 && !this.props.lastKnownError) ||
-            (this.props.athletes.length !== 0 && this.props.manualStop)
-              ? this.tableRenderer(
-                  this.tablePopulator(this.athletesSorter(this.props.athletes))
-                )
-              : null}
-            {this.props.lastKnownError && !this.props.manualStop
-              ? this.lastErrorRenderer(this.props.lastKnownError)
-              : null}
+              : this.isTableReadyForDisplay()
+                ? this.tableRenderer(
+                    this.tablePopulator(
+                      this.athletesSorter(this.props.athletes)
+                    )
+                  )
+                : this.isErrorPresent()
+                  ? this.lastErrorRenderer(this.props.lastKnownError)
+                  : null}
           </div>
         </div>
       </div>
