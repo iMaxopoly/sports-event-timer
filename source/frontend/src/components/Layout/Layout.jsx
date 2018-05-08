@@ -13,7 +13,7 @@ const Layout = props => (
         <Header />
 
         <SimulationTypeSelector
-          callback={props.callback}
+          changeSimulationTypeHandler={props.changeSimulationTypeHandler}
           simulationType={props.simulationType}
           raceInProgress={props.raceInProgress}
         />
@@ -42,7 +42,7 @@ const Layout = props => (
 
 Layout.propTypes = {
   athletes: PropTypes.array,
-  callback: PropTypes.func,
+  changeSimulationTypeHandler: PropTypes.func,
   children: PropTypes.any,
   lastKnownError: PropTypes.string,
   raceInProgress: PropTypes.bool,

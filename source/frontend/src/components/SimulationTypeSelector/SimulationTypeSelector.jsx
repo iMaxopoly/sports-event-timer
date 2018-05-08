@@ -14,7 +14,7 @@ const SimulationTypeSelector = props => (
             className="form-check-input"
             type="radio"
             value={simulationType.CLIENT.toString()}
-            onChange={props.callback}
+            onChange={props.changeSimulationTypeHandler}
             disabled={props.raceInProgress}
             checked={props.simulationType === simulationType.CLIENT}
           />{" "}
@@ -26,7 +26,7 @@ const SimulationTypeSelector = props => (
             className="form-check-input"
             type="radio"
             value={simulationType.SERVER.toString()}
-            onChange={props.callback}
+            onChange={props.changeSimulationTypeHandler}
             disabled={props.raceInProgress}
             checked={props.simulationType === simulationType.SERVER}
           />{" "}
@@ -38,7 +38,7 @@ const SimulationTypeSelector = props => (
 );
 
 SimulationTypeSelector.propTypes = {
-  callback: PropTypes.func.isRequired,
+  changeSimulationTypeHandler: PropTypes.func.isRequired,
   raceInProgress: PropTypes.bool.isRequired,
   simulationType: PropTypes.symbol.isRequired
 };
