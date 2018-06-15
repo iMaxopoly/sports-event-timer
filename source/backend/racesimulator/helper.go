@@ -1,15 +1,15 @@
 package racesimulator
 
 import (
-	"sports-event-timing/source/backend/database"
+	"sports-event-timer/source/backend/database"
 )
 
 // helperFuncAthleteDBSliceToIEntitySlice helps in converting from:
 // []database.AthleteDBModel to []IEntity type, helping with database value extractions
-func helperFuncAthleteDBSliceToIEntitySlice(athletesDBSlice []database.AthleteDBModel) []IEntity {
+func helperFuncAthleteDBSliceToIEntitySlice(athletesDBSlice *[]database.AthleteDBModel) *[]IEntity {
 	var entitySlice []IEntity
 
-	for _, athleteDB := range athletesDBSlice {
+	for _, athleteDB := range *athletesDBSlice {
 		var entity athlete
 		entity.setEntityName(athleteDB.FullName)
 		entity.setStartNumber(athleteDB.StartNumber)
@@ -27,15 +27,15 @@ func helperFuncAthleteDBSliceToIEntitySlice(athletesDBSlice []database.AthleteDB
 		entitySlice = append(entitySlice, &entity)
 	}
 
-	return entitySlice
+	return &entitySlice
 }
 
 // helperFuncIEntitySliceToAthleteDBSlice helps in converting from:
 // []IEntity to []database.AthleteDBModel type, helping with database value extractions
-func helperFuncIEntitySliceToAthleteDBSlice(entitiesSlice []IEntity) []database.AthleteDBModel {
+func helperFuncIEntitySliceToAthleteDBSlice(entitiesSlice *[]IEntity) *[]database.AthleteDBModel {
 	var athleteDBModelSlice []database.AthleteDBModel
 
-	for _, entity := range entitiesSlice {
+	for _, entity := range *entitiesSlice {
 		var ath = database.AthleteDBModel{
 			FullName:                       entity.EntityName(),
 			StartNumber:                    entity.StartNumber(),
@@ -50,15 +50,15 @@ func helperFuncIEntitySliceToAthleteDBSlice(entitiesSlice []IEntity) []database.
 		athleteDBModelSlice = append(athleteDBModelSlice, ath)
 	}
 
-	return athleteDBModelSlice
+	return &athleteDBModelSlice
 }
 
 // helperFuncTimePointDBSliceToITimePointSlice helps in converting from:
 // []database.TimepointDBModel to []ITimePoint type, helping with database value extractions
-func helperFuncTimePointDBSliceToITimePointSlice(timePointsDBSlice []database.TimepointDBModel) []ITimePoint {
+func helperFuncTimePointDBSliceToITimePointSlice(timePointsDBSlice *[]database.TimepointDBModel) *[]ITimePoint {
 	var timePointsSlice []ITimePoint
 
-	for _, t := range timePointsDBSlice {
+	for _, t := range *timePointsDBSlice {
 		var tp timePoint
 
 		tp.setName(TimePointName(t.Name))
@@ -70,15 +70,15 @@ func helperFuncTimePointDBSliceToITimePointSlice(timePointsDBSlice []database.Ti
 		timePointsSlice = append(timePointsSlice, &tp)
 	}
 
-	return timePointsSlice
+	return &timePointsSlice
 }
 
 // helperFuncITimePointSliceToTimePointDBSlice helps in converting from:
 // []ITimePoint to []database.TimepointDBModel type, helping with database value extractions
-func helperFuncITimePointSliceToTimePointDBSlice(timePointsSlice []ITimePoint) []database.TimepointDBModel {
+func helperFuncITimePointSliceToTimePointDBSlice(timePointsSlice *[]ITimePoint) *[]database.TimepointDBModel {
 	var timePointDBModelSlice []database.TimepointDBModel
 
-	for _, timePoint := range timePointsSlice {
+	for _, timePoint := range *timePointsSlice {
 		var tp = database.TimepointDBModel{
 			Name:           string(timePoint.Name()),
 			Location:       int(timePoint.Location()),
@@ -88,5 +88,5 @@ func helperFuncITimePointSliceToTimePointDBSlice(timePointsSlice []ITimePoint) [
 		timePointDBModelSlice = append(timePointDBModelSlice, tp)
 	}
 
-	return timePointDBModelSlice
+	return &timePointDBModelSlice
 }

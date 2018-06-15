@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 
 // This component is actually a wrapper for the button in the project to start and stop the race.
-const raceControl = props => (
+const RaceControl = props => (
   <button
     className="btn btn-primary btn-lg btn-block"
     onClick={props.callback}
@@ -16,11 +16,11 @@ const raceControl = props => (
   </button>
 );
 
-raceControl.propTypes = {
+RaceControl.propTypes = {
   callback: PropTypes.func.isRequired,
   loadingData: PropTypes.bool.isRequired,
   manualStop: PropTypes.bool.isRequired,
   text: PropTypes.string.isRequired
 };
 
-export default raceControl;
+export default RaceControl;

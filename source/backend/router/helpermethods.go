@@ -35,7 +35,7 @@ func payloadHasCommand(payload *raceJSONPayload) bool {
 // loadEntitiesToShow fetches entities currently in the database and prepares it to be
 // sent as a JSON payload to the client.
 func loadEntitiesToShow(raceResp *raceJSONPayload) {
-	entities := event.Entities()
+	entities := *event.Entities()
 
 	if len(entities) <= 0 {
 		return
@@ -58,7 +58,7 @@ func loadEntitiesToShow(raceResp *raceJSONPayload) {
 // loadEntitiesToShow fetches timepoints currently in the database and prepares it to be
 // sent as a JSON payload to the client.
 func loadTimePointsToShow(raceResp *raceJSONPayload) {
-	timePoints := event.TimePoints()
+	timePoints := *event.TimePoints()
 
 	if len(timePoints) <= 0 {
 		return

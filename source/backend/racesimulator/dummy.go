@@ -1,7 +1,7 @@
 package racesimulator
 
 // dummyEntityData returns a slice of generated dummy IEntity.
-func dummyEntityData() []IEntity {
+func dummyEntityData() *[]IEntity {
 	// Dummy Athletes
 	var (
 		manish     = NewEntity("Manish Singh", 1, FinishPoint)
@@ -20,15 +20,15 @@ func dummyEntityData() []IEntity {
 		ahti,
 	)
 
-	return athletes
+	return &athletes
 }
 
 // dummyTimePointData returns a slice of generated dummy ITimePoint.
-func dummyTimePointData() []ITimePoint {
+func dummyTimePointData() *[]ITimePoint {
 	var timePoints []ITimePoint
 	timePoints = append(timePoints,
 		NewTimePoint(CorridorTimePoint, CorridorPoint),
 		NewTimePoint(FinishLineTimePoint, FinishPoint))
 
-	return timePoints
+	return &timePoints
 }

@@ -4,7 +4,7 @@ import { simulationType } from "../../simulationTypes";
 
 // The component allows for easy switching between the server emulation demo and
 // the client sided emulation demo. It remains dissabled while the race is on-going.
-const simulationTypeSelector = props => (
+const SimulationTypeSelector = props => (
   <Fragment>
     <div className="text-center">
       <div className="form-check form-check-inline">
@@ -14,7 +14,7 @@ const simulationTypeSelector = props => (
             className="form-check-input"
             type="radio"
             value={simulationType.CLIENT.toString()}
-            onChange={props.callback}
+            onChange={props.changeSimulationTypeHandler}
             disabled={props.raceInProgress}
             checked={props.simulationType === simulationType.CLIENT}
           />{" "}
@@ -26,7 +26,7 @@ const simulationTypeSelector = props => (
             className="form-check-input"
             type="radio"
             value={simulationType.SERVER.toString()}
-            onChange={props.callback}
+            onChange={props.changeSimulationTypeHandler}
             disabled={props.raceInProgress}
             checked={props.simulationType === simulationType.SERVER}
           />{" "}
@@ -37,10 +37,10 @@ const simulationTypeSelector = props => (
   </Fragment>
 );
 
-simulationTypeSelector.propTypes = {
-  callback: PropTypes.func.isRequired,
+SimulationTypeSelector.propTypes = {
+  changeSimulationTypeHandler: PropTypes.func.isRequired,
   raceInProgress: PropTypes.bool.isRequired,
   simulationType: PropTypes.symbol.isRequired
 };
 
-export default simulationTypeSelector;
+export default SimulationTypeSelector;

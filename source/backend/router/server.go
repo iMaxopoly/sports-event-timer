@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 
-	"sports-event-timing/source/backend/racesimulator"
+	"sports-event-timer/source/backend/racesimulator"
 
 	"github.com/julienschmidt/httprouter"
 	"github.com/rs/cors"
@@ -19,6 +19,7 @@ func init() {
 	event.SetEventState(racesimulator.RaceNotRunning)
 }
 
+// Serve loads up the routes and serves at given point.
 func Serve() {
 	mux := httprouter.New()
 

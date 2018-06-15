@@ -14,9 +14,12 @@ import faMapMarker from "@fortawesome/fontawesome-free-solid/faMapMarkerAlt";
 
 import reducer from "./store/reducers/reducer";
 import watchNetwork from "./store/sagas";
-import App from "./App";
+import RaceEvent from "./containers/RaceEvent/RaceEvent";
 
 import * as serviceWorker from "./serviceWorker";
+
+import "bootstrap/scss/bootstrap.scss";
+import "./index.scss";
 
 // fontawesome setup
 fontawesome.library.add(
@@ -41,7 +44,7 @@ axios.defaults.headers.post["Content-Type"] =
 
 const main = (
   <Provider store={store}>
-    <App />
+    <RaceEvent />
   </Provider>
 );
 

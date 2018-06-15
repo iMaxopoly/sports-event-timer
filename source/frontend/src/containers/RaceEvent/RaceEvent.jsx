@@ -33,7 +33,10 @@ class RaceEvent extends Component {
 
   render() {
     return (
-      <Layout callback={this.changeSimulation} {...this.props}>
+      <Layout
+        changeSimulationTypeHandler={this.changeSimulation}
+        {...this.props}
+      >
         {this.props.raceInProgress ? (
           <RaceControl
             callback={this.stopRace}

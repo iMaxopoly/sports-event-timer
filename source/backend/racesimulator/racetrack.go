@@ -45,7 +45,7 @@ func (rt *raceTrack) Distance() PointAtDistance { return rt.distance }
 
 func (rt *raceTrack) setDistance(distance PointAtDistance) { rt.distance = distance }
 
-// Atheletes returns a collection of IEntity that are expected to compete in the racetrack.
+// Athletes returns a collection of IEntity that are expected to compete in the racetrack.
 func (rt *raceTrack) Athletes() []IEntity { return rt.athletes }
 
 func (rt *raceTrack) setAthletes(athletes []IEntity) { rt.athletes = athletes }
@@ -75,6 +75,6 @@ func (rt *raceTrack) Race(state *EventState) {
 
 // NewRaceTrack returns a new interface of IRaceTrack.
 // It takes the distance, slice of IEntity, and a variadic input of ITimePoint.
-func NewRaceTrack(distance PointAtDistance, athletes []IEntity, timepoints ...ITimePoint) IRaceTrack {
-	return &raceTrack{distance: distance, athletes: athletes, timePoints: timepoints}
+func NewRaceTrack(distance PointAtDistance, athletes *[]IEntity, timepoints *[]ITimePoint) IRaceTrack {
+	return &raceTrack{distance: distance, athletes: *athletes, timePoints: *timepoints}
 }

@@ -5,11 +5,13 @@ import (
 	"time"
 
 	"github.com/jinzhu/gorm"
+
+	// Loading the sqlite 3 driver
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 )
 
 func init() {
-	// verify connection
+	// Verifying connection
 	Operator.connect()
 	defer Operator.db.Close()
 }
@@ -19,6 +21,7 @@ type Operations struct {
 	db *gorm.DB
 }
 
+// Operator is the required exported variable that allows database operations.
 var Operator Operations
 
 // AthleteDBModel is a gorm model struct to storage athletes.
@@ -52,9 +55,9 @@ func (dbo *Operations) connect() {
 	dbo.db.LogMode(false)
 }
 
-// ResetPlatform drops the existing database tables and automigrates schema.
+// ResetDB drops the existing database tables and automigrates schema.
 // Thereby, it also populates the underlying tables with dummy data.
-func (dbo *Operations) ResetDB(dummyAthletes []AthleteDBModel, dummyTimePoints []TimepointDBModel) {
+func (dbo *Operations) ResetDB(dummyAthletes *[]AthleteDBModel, dummyTimePoints *[]TimepointDBModel) {
 	Operator.connect()
 	defer Operator.db.Close()
 
@@ -66,7 +69,7 @@ func (dbo *Operations) ResetDB(dummyAthletes []AthleteDBModel, dummyTimePoints [
 
 // Update updates the a single athlete row by comparing the supplied chip identifier string.
 // All fields that are changed, get updated.
-func (dbo *Operations) Update(chipIdentifier string, athlete AthleteDBModel) {
+func (dbo *Operations) Update(chipIdentifier string, athlete *AthleteDBModel) {
 	dbo.connect()
 	defer dbo.db.Close()
 
@@ -75,23 +78,23 @@ func (dbo *Operations) Update(chipIdentifier string, athlete AthleteDBModel) {
 }
 
 // Entities returns a slice of IEntity which are actually all the athletes currently stored.
-func (dbo *Operations) Entities() []AthleteDBModel {
+func (dbo *Operations) Entities() *[]AthleteDBModel {
 	dbo.connect()
 	defer dbo.db.Close()
 
 	var valDB []AthleteDBModel
 	dbo.db.Find(&valDB)
 
-	return valDB
+	return &valDB
 }
 
 // SetEntities takes in a slice of IEntity and updates the currently stored athletes
 // based on observable changes.
-func (dbo Operations) SetEntities(entities []AthleteDBModel) {
+func (dbo Operations) SetEntities(entities *[]AthleteDBModel) {
 	dbo.connect()
 	defer dbo.db.Close()
 
-	for _, valDB := range entities {
+	for _, valDB := range *entities {
 		var val AthleteDBModel
 		dbo.db.Model(&val).Where(&AthleteDBModel{ChipIdentifier: valDB.ChipIdentifier}).Update(valDB)
 	}
@@ -99,44 +102,44 @@ func (dbo Operations) SetEntities(entities []AthleteDBModel) {
 
 // TimePoints returns a slice of ITimePoint which are all the stored TimepointDBModel values.
 // This helps track the location of the timepoint as well as the respective chip indentifiers.
-func (dbo *Operations) TimePoints() []TimepointDBModel {
+func (dbo *Operations) TimePoints() *[]TimepointDBModel {
 	dbo.connect()
 	defer dbo.db.Close()
 
 	var timePointsDB []TimepointDBModel
 	dbo.db.Find(&timePointsDB)
 
-	return timePointsDB
+	return &timePointsDB
 }
 
 // SetupDummies sets up dummy values for the athletes and stores it in the database
-func (dbo *Operations) SetupDummies(dummyAthletes []AthleteDBModel) {
+func (dbo *Operations) SetupDummies(dummyAthletes *[]AthleteDBModel) {
 	dbo.connect()
 	defer dbo.db.Close()
 
-	for _, val := range dummyAthletes {
+	for _, val := range *dummyAthletes {
 		dbo.db.Create(&val)
 	}
 }
 
 // GetDummies gets a slice of IEntity which are actually all the dummy values currently stored in the database.
 // It also modifies the speed to give it a dynamic random value for proper simulation.
-func (dbo *Operations) GetDummies() []AthleteDBModel {
+func (dbo *Operations) GetDummies() *[]AthleteDBModel {
 	dbo.connect()
 	defer dbo.db.Close()
 
 	var valDB []AthleteDBModel
 	dbo.db.Find(&valDB)
 
-	return valDB
+	return &valDB
 }
 
 // SetupTimePoints sets up dummy values for the timepoints and stores it in the database.
-func (dbo *Operations) SetupTimePoints(dummyTimePoints []TimepointDBModel) {
+func (dbo *Operations) SetupTimePoints(dummyTimePoints *[]TimepointDBModel) {
 	dbo.connect()
 	defer dbo.db.Close()
 
-	for _, val := range dummyTimePoints {
+	for _, val := range *dummyTimePoints {
 		dbo.db.Create(&val)
 	}
 }

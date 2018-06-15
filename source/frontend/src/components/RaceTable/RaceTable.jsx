@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 import FlipMove from "react-flip-move";
-import Alert from "../../components/Alert/Alert";
+import Alert from "../Alert/Alert";
 import Athlete from "../Athlete/Athlete";
 
 // RaceTable wraps the Athlete container in a table showing the entirety of the
@@ -31,18 +31,15 @@ class RaceTable extends Component {
     <Alert message="Race is currently not underway." />
   );
 
+  athleteSortComparison = (a, b) => (b < a ? 1 : a < b ? -1 : 0);
+
   // Sorts the athletes based on time taken to finish the race.
   athletesSorter = athletes => {
     if (athletes.every(athlete => athlete.timeTakenToFinish !== -1)) {
       return athletes
-        .map(athlete => Object.assign({}, athlete))
-        .sort(
-          (a, b) =>
-            b.timeTakenToFinish < a.timeTakenToFinish
-              ? 1
-              : a.timeTakenToFinish < b.timeTakenToFinish
-                ? -1
-                : 0
+        .map(athlete => ({ ...athlete }))
+        .sort((a, b) =>
+          this.athleteSortComparison(a.timeTakenToFinish, b.timeTakenToFinish)
         );
     }
 
@@ -51,25 +48,20 @@ class RaceTable extends Component {
       athletes.every(athlete => athlete.timeTakenToReachFinishCorridor !== -1)
     ) {
       return athletes
-        .map(athlete => Object.assign({}, athlete))
-        .sort(
-          (a, b) =>
-            b.timeTakenToReachFinishCorridor < a.timeTakenToReachFinishCorridor
-              ? 1
-              : a.timeTakenToReachFinishCorridor <
-                b.timeTakenToReachFinishCorridor
-                ? -1
-                : 0
+        .map(athlete => ({ ...athlete }))
+        .sort((a, b) =>
+          this.athleteSortComparison(
+            a.timeTakenToReachFinishCorridor,
+            b.timeTakenToReachFinishCorridor
+          )
         );
     }
 
     // Sorts the athletes based on their location during the race.
     return athletes
-      .map(athlete => Object.assign({}, athlete))
-      .sort(
-        (a, b) =>
-          b.location > a.location ? 1 : a.location > b.location ? -1 : 0
-      );
+      .map(athlete => ({ ...athlete }))
+      .sort((a, b) => this.athleteSortComparison(a.location, b.location))
+      .reverse();
   };
 
   // Populates the table with athlete attributes in an on-going race
@@ -117,25 +109,33 @@ class RaceTable extends Component {
     </div>
   );
 
+  isRaceInProgress = () =>
+    this.props.raceInProgress ||
+    this.props.athletes.length !== 0 ||
+    this.props.lastKnownError;
+
+  isTableReadyForDisplay = () =>
+    (this.props.athletes.length !== 0 && !this.props.lastKnownError) ||
+    (this.props.athletes.length !== 0 && this.props.manualStop);
+
+  isErrorPresent = () => this.props.lastKnownError && !this.props.manualStop;
+
   render() {
     return (
       <div className="card">
         <div className="card-body">
           <div className="card-text">
-            {!this.props.raceInProgress &&
-            this.props.athletes.length === 0 &&
-            !this.props.lastKnownError
+            {!this.isRaceInProgress()
               ? this.raceNotInProgressRenderer()
-              : null}
-            {(this.props.athletes.length !== 0 && !this.props.lastKnownError) ||
-            (this.props.athletes.length !== 0 && this.props.manualStop)
-              ? this.tableRenderer(
-                  this.tablePopulator(this.athletesSorter(this.props.athletes))
-                )
-              : null}
-            {this.props.lastKnownError && !this.props.manualStop
-              ? this.lastErrorRenderer(this.props.lastKnownError)
-              : null}
+              : this.isTableReadyForDisplay()
+                ? this.tableRenderer(
+                    this.tablePopulator(
+                      this.athletesSorter(this.props.athletes)
+                    )
+                  )
+                : this.isErrorPresent()
+                  ? this.lastErrorRenderer(this.props.lastKnownError)
+                  : null}
           </div>
         </div>
       </div>
