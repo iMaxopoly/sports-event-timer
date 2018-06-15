@@ -293,7 +293,3 @@ _The database file itself(called 'RaceEventDB.db') is located in the 'dist' fold
 ## License
 
 This project is licensed under The Unlicence License - see the [LICENSE](LICENSE) file for details
-
-## Acknowledgments
-
-* Mooncascade for the opportunity given(https://www.mooncascade.com)
